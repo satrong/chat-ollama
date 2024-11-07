@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useMutationObserver, useThrottleFn, useScroll } from '@vueuse/core'
 import type { KnowledgeBase } from '@prisma/client'
-import { loadOllamaInstructions, loadKnowledgeBases } from '@/utils/settings'
+import { loadOllamaInstructions } from '@/utils/settings'
 import { type ChatBoxFormData } from '@/components/ChatInputBox.vue'
 import { type ChatSessionSettings } from '~/pages/chat/index.vue'
 import { ChatSettings } from '#components'
 import type { ChatMessage } from '~/types/chat'
+import { LIMIT_MESSAGE_HISTORY } from '~/config'
 
 type Instruction = Awaited<ReturnType<typeof loadOllamaInstructions>>[number]
 
@@ -38,7 +39,7 @@ const messageListEl = shallowRef<HTMLElement>()
 const behavior = ref<ScrollBehavior>('auto')
 const { y } = useScroll(messageListEl, { behavior })
 const isFirstLoad = ref(true)
-const limitHistorySize = computed(() => Math.max(sessionInfo.value?.attachedMessagesCount || 0, 20))
+const limitHistorySize = computed(() => Math.max(sessionInfo.value?.attachedMessagesCount || 0, LIMIT_MESSAGE_HISTORY))
 
 const isUserScrolling = computed(() => {
   if (isFirstLoad.value) return false
@@ -184,11 +185,7 @@ onReceivedMessage(data => {
 })
 
 onMounted(async () => {
-  await Promise.all([loadOllamaInstructions(), loadKnowledgeBases()])
-    .then(([res1, res2]) => {
-      instructions.push(...res1)
-      knowledgeBases.push(...res2)
-    })
+  instructions.push(...(await loadOllamaInstructions()))
   initData(props.sessionId)
 })
 

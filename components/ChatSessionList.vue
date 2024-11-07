@@ -112,7 +112,7 @@ async function updateSessionInfo(data: Partial<Omit<ChatSession, 'id' | 'createT
              :class="isMobile ? 'w-[80vw] max-w-[400px] h-full' : 'border-r dark:border-gray-800'"
              class="h-full box-border">
     <div class="p-3 border-b border-primary-400/30 flex items-center">
-      <h3 class="text-primary-600 dark:text-primary-300 mr-auto">{{ t("chat.allChats") }} ({{ sessionList.length }})</h3>
+      <h3 class="mr-auto">{{ t("chat.allChats") }} ({{ sessionList.length }})</h3>
       <UTooltip :text="t('chat.newChat')" :popper="{ placement: 'top' }">
         <UButton icon="i-material-symbols-add" color="primary" square @click="onNewChat"></UButton>
       </UTooltip>
@@ -123,12 +123,12 @@ async function updateSessionInfo(data: Partial<Omit<ChatSession, 'id' | 'createT
            class="session-item relative box-border p-2 cursor-pointer dark:text-gray-300 border-b border-b-gray-100 dark:border-b-gray-100/5 border-l-2"
            :class="[
             item.isTop ? 'bg-primary-300/10 dark:bg-primary-800/10' : 'hover:bg-gray-50 dark:hover:bg-gray-700/30',
-            currentSessionId === item.id ? 'border-l-pink-700/80 dark:border-l-pink-400/80' : 'border-l-transparent'
+            currentSessionId === item.id ? 'border-l-primary-700/80 dark:border-l-primary-400/80' : 'border-l-transparent'
           ]"
            @click="onSelectChat(item.id!)">
         <div class="w-full flex items-center text-sm h-[32px]">
           <div class="line-clamp-1 grow"
-               :class="currentSessionId === item.id ? 'text-pink-700  dark:text-pink-400 font-bold' : 'opacity-80'">
+               :class="currentSessionId === item.id ? 'text-primary-700  dark:text-primary-400 font-bold' : 'opacity-80'">
             {{ item.title || `${t("chat.newChat")} ${item.id}` }}
           </div>
           <ChatSessionListActionMore :data="item"

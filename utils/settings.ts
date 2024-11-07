@@ -59,8 +59,3 @@ export const loadOllamaInstructions = async () => {
     return []
   }
 }
-
-export async function loadKnowledgeBases() {
-  const response = await $fetchWithAuth('/api/knowledgebases/').catch(() => null)
-  return (response?.knowledgeBases || []) as KnowledgeBase[]
-}

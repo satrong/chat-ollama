@@ -21,7 +21,7 @@ const contentClass = computed(() => {
     isModelMessage.value ? 'max-w-[calc(100%-2rem)]' : 'max-w-full',
     props.message.type === 'error'
       ? 'bg-red-50 dark:bg-red-800/60'
-      : (isModelMessage.value ? 'bg-gray-50 dark:bg-gray-800' : 'bg-primary-50 dark:bg-primary-400/60'),
+      : (isModelMessage.value ? 'bg-gray-50 dark:bg-gray-800' : 'bg-primary-100/60 dark:bg-primary-700/60'),
   ]
 })
 
@@ -56,7 +56,7 @@ watch(() => props.showToggleButton, (value) => {
     </div>
     <div class="leading-6 text-sm flex items-center max-w-full message-content"
          :class="{ 'text-gray-400 dark:text-gray-500': message.type === 'canceled', 'flex-row-reverse': !isModelMessage }">
-      <div class="flex border border-primary/20 rounded-lg overflow-hidden box-border"
+      <div class="flex rounded-lg overflow-hidden box-border"
            :class="contentClass">
         <div v-if="message.type === 'loading'" class="text-xl text-primary p-3">
           <span class="block i-svg-spinners-3-dots-scale"></span>

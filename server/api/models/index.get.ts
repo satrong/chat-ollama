@@ -1,6 +1,5 @@
 import { type ModelResponse, type ModelDetails } from 'ollama'
 import { MODEL_FAMILIES, OPENAI_GPT_MODELS, ANTHROPIC_MODELS, AZURE_OPENAI_GPT_MODELS, MOONSHOT_MODELS, GEMINI_MODELS, GROQ_MODELS } from '~/config/index'
-import { getOllama } from '@/server/utils/ollama'
 
 export interface ModelItem extends Partial<Omit<ModelResponse, 'details'>> {
   details: Partial<ModelDetails> & { family: string }
@@ -9,12 +8,6 @@ export interface ModelItem extends Partial<Omit<ModelResponse, 'details'>> {
 export default defineEventHandler(async (event) => {
   const keys = event.context.keys
   const models: ModelItem[] = []
-
-  const ollama = await getOllama(event)
-  if (ollama) {
-    const response = await ollama.list()
-    models.push(...response.models)
-  }
 
   if (keys.openai.key) {
     OPENAI_GPT_MODELS.forEach((model) => {
