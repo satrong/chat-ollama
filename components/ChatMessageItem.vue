@@ -40,9 +40,8 @@ watch(() => props.showToggleButton, (value) => {
 </script>
 
 <template>
-  <div class="flex flex-col my-2"
-       :class="{ 'items-end': message.role === 'user' }">
-    <div class="text-gray-500 dark:text-gray-400 p-1">
+  <div class="flex flex-col message-item" :class="{ 'pt-6': !isModelMessage }">
+    <div class="text-gray-500 dark:text-gray-400 p-1 flex items-center min-h-[34px]">
       <Icon v-if="message.role === 'user'" name="i-material-symbols-account-circle" class="text-lg" />
       <div v-else class="text-sm flex items-center">
         <UTooltip :text="modelName.family" :popper="{ placement: 'top' }">
@@ -53,48 +52,43 @@ watch(() => props.showToggleButton, (value) => {
           <span class="text-gray-400 dark:text-gray-500 text-xs">{{ timeUsed }}s</span>
         </template>
       </div>
+      <ChatMessageActionMore :message="message"
+                             :disabled="sending"
+                             class="ml-4 action-more"
+                             @resend="emits('resend', message)"
+                             @remove="emits('remove', message)" />
     </div>
     <div class="leading-6 text-sm flex items-center max-w-full message-content"
-         :class="{ 'text-gray-400 dark:text-gray-500': message.type === 'canceled', 'flex-row-reverse': !isModelMessage }">
+         :class="{ 'text-gray-400 dark:text-gray-500': message.type === 'canceled' }">
       <div class="flex rounded-lg overflow-hidden box-border"
            :class="contentClass">
-        <div v-if="message.type === 'loading'" class="text-xl text-primary p-3">
+        <div v-if="message.type === 'loading'" class="text-xl text-primary px-3 py-2">
           <span class="block i-svg-spinners-3-dots-scale"></span>
         </div>
         <template v-else-if="isModelMessage">
-          <div class="p-3 overflow-hidden">
-            <div v-html="markdown.render(message.content || '')" class="md-body" :class="{ 'line-clamp-3 max-h-[5rem]': !opened }" />
-            <Sources v-show="opened" :relevant_documents="message?.relevantDocs || []" />
+          <div class="px-3 py-2 overflow-hidden">
+            <div v-html="markdown.render(message.content || '')" class="md-body" :class="{ 'line-clamp-4 max-h-[8rem]': !opened }" />
           </div>
           <MessageToggleCollapseButton v-if="showToggleButton" :opened="opened" @click="opened = !opened" />
         </template>
-        <pre v-else v-text="message.content" class="p-3 whitespace-break-spaces" />
+        <pre v-else v-text="message.content" class="px-3 py-2 whitespace-break-spaces" />
       </div>
-      <ChatMessageActionMore :message="message"
-                             :disabled="sending"
-                             @resend="emits('resend', message)"
-                             @remove="emits('remove', message)">
-        <UButton :class="{ invisible: sending }" icon="i-material-symbols-more-vert" color="gray"
-                 :variant="'link'"
-                 class="action-more">
-        </UButton>
-      </ChatMessageActionMore>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.message-content {
+.message-item {
   .action-more {
-    transform-origin: center center;
-    transition: all 0.3s;
-    transform: scale(0);
     opacity: 0;
+    transform-origin: 0 center;
+    transform: scale(0.5) translateX(-1rem);
+    transition: all 0.3s ease-in-out;
   }
 
   &:hover {
     .action-more {
-      transform: scale(1);
+      transform: scale(0.9) translateX(0);
       opacity: 1;
     }
   }

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useClipboard } from '@vueuse/core'
-import type { Message } from '~/components/Chat.vue'
+import type { ChatMessage } from '~/types/chat'
 
 const props = defineProps<{
-  message: Message
+  message: ChatMessage
   disabled?: boolean
 }>()
 
@@ -52,11 +52,20 @@ const buttons = computed(() => {
 </script>
 
 <template>
-  <UDropdown :items="[buttons]"
+  <div class="flex gap-1">
+    <UButton v-for="btn in buttons"
+             :icon="btn.icon"
+             size="2xs"
+             color="gray"
+             :title="btn.label"
+             variant="ghost"
+             @click="btn.click"></UButton>
+  </div>
+  <!-- <UDropdown :items="[buttons]"
              mode="hover"
              data-observer="ignore"
              :popper="{ placement: 'bottom', offsetDistance: 0 }"
              :ui="{ width: 'w-32' }">
     <slot />
-  </UDropdown>
+  </UDropdown> -->
 </template>

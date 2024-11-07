@@ -25,12 +25,16 @@ body {
 }
 
 .md-body {
-  --color-neutral-muted: rgb(var(--color-primary-400) / 0.1);
-  --color-canvas-subtle: rgb(var(--color-primary-50));
+  --color-neutral-muted: rgb(var(--color-primary-400) / 0.2);
+  --color-canvas-subtle: #fff;
 
   background-color: transparent;
   font-size: 0.875rem;
   line-height: 1.5rem;
+
+  pre {
+    border: 1px solid #eee;
+  }
 
   code {
     white-space: pre-wrap;
@@ -54,6 +58,10 @@ body {
 .dark .md-body {
   --color-neutral-muted: rgb(var(--color-primary-200) / 0.2);
   --color-canvas-subtle: rgb(var(--color-gray-900));
+
+  pre {
+    border: 1px solid transparent;
+  }
 }
 
 .table-list {
